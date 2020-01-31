@@ -1,0 +1,51 @@
+## Moonlit .gitignore
+## Author: Michał Gardeła
+## Version: 1.0.2
+
+## Ignore all files:
+*
+*.db
+
+## Ignore all, except:
+
+# Unity must-have directories:
+![aA]ssets
+![aA]ssets/**
+![aA]ssets/Resouces/Fonts/**
+![pP]roject[sS]ettings
+![pP]roject[sS]ettings/**
+
+# Git settings:
+!.gitignore
+!.gitattributes
+!.gitmodules
+
+# Documents (Docs)
+![dD]ocs
+![dD]ocs/**
+![dD]ocuments
+![dD]ocuments/**
+
+# Readme
+![rR]eadme.*
+!README.*
+!Changelog.*
+
+## Ignore again:
+
+# Special temporary directory in Assets:
+# zGitIgnore
+[aA]ssets/[Zz][gG]it[iI]gnore
+[aA]ssets/[Zz][gG]it[iI]gnore/**
+
+~*.*
+
+# submodules
+![aA]ssets
+
+# Ignore UnityVS tools:
+Assets/**/UnityVS
+
+# Mini Games Code
+Assets/Resources/FightModes
+Assets/Scripts/MBehaviours/MGames
