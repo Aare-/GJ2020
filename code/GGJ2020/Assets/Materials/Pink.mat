@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Blue
-  m_Shader: {fileID: 4800000, guid: d79c00e92750ced4ab7e54158d048b0d, type: 3}
+  m_Name: Pink
+  m_Shader: {fileID: 4800000, guid: 74811ce7e26040c4d80b670e5d6a05fc, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -73,5 +73,5 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0, g: 0.07727146, b: 1, a: 1}
+    - _Color: {r: 0.9811321, g: 0, b: 0.6959395, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

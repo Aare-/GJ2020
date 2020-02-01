@@ -6,50 +6,24 @@ public class CameraController : MonoBehaviour
 
 {
     [SerializeField] Transform Center;
+    [SerializeField] Transform LookPos;
     // [SerializeField] Vector3 offset;
-
+    Vector3 dir;
     float currentMouseXPos;
     float lastMouseXPos;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    GameObject tempGameObject;
+
+
 
     // Update is called once per frame
     void Update()
     {
-       
-        if (Input.GetKey(KeyCode.W))
-        {
-            //transform.Translate(new Vector3(0, 0, .5f));
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-           // transform.Translate(new Vector3(0, 0, -.5f));
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-           // transform.Translate(new Vector3(-.5f, 0, 0));
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-           // transform.Translate(new Vector3(.5f, 0, 0));
-        }
-        else if (Input.GetKey(KeyCode.Q))
-        {
-            // transform.Rotate(new Vector3(0, -5, 0));
-            transform.RotateAround(Center.position, Vector3.up,-5);
-        }
-        else if (Input.GetKey(KeyCode.E))
-        {
-            transform.RotateAround(Center.position, Vector3.up, 5);
-
-        }
+        dir = LookPos.position - transform.position;
         transform.LookAt(Vector3.zero);
 
         CameraRotation();
+        LookIntoWalls();
     }
 
 
@@ -84,4 +58,25 @@ public class CameraController : MonoBehaviour
         }
 
     }
+
+    void LookIntoWalls()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, dir, out hit))
+        {
+            if (hit.collider.gameObject.layer == 8)
+            {
+                hit.collider.gameObject.GetComponent<MeshRenderer>().enabled = false;
+                tempGameObject = hit.collider.gameObject;
+
+            }
+            else
+            {
+                tempGameObject.GetComponent<MeshRenderer>().enabled = true;
+            }
+        }
+           
+    }
 }
+
