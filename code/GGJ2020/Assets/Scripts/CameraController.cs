@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraController : MonoBehaviour {
 
-{
-    [SerializeField] Transform Center;
+    [SerializeField]
+    protected float _RotationSpeed;
+    
+    [SerializeField] 
+    Transform Center;
     // [SerializeField] Vector3 offset;
 
     float currentMouseXPos;
+    
     float lastMouseXPos;
 
     // Start is called before the first frame update
@@ -50,38 +54,19 @@ public class CameraController : MonoBehaviour
         transform.LookAt(Vector3.zero);
 
         CameraRotation();
+
+        lastMouseXPos = Input.mousePosition.x;
     }
 
 
     void CameraRotation()
     {
         currentMouseXPos = Input.mousePosition.x;
-        if (Input.GetMouseButtonDown(2))
-        {
-           // currentMouseXPos = Input.mousePosition.x;
-            lastMouseXPos = currentMouseXPos;
-            Debug.Log("rotate");
-        }
 
-       else if (Input.GetMouseButton(2))
-        {
+        if (Input.GetMouseButton(2)) {
+            var delta = currentMouseXPos - lastMouseXPos;
             
-            if (Mathf.Abs(currentMouseXPos - lastMouseXPos) > 0.1f)
-            {
-                Debug.Log("rotating");
-                if (currentMouseXPos - lastMouseXPos > 0)
-                {
-                    transform.RotateAround(Center.position, Vector3.up, -5);
-                    Debug.Log("rotating");
-                }
-                else if (currentMouseXPos - lastMouseXPos < 0)
-                {
-                    transform.RotateAround(Center.position, Vector3.up, 5);
-                }
-                lastMouseXPos = currentMouseXPos;
-            }
-
+            transform.RotateAround(Center.position, Vector3.up, delta * _RotationSpeed);
         }
-
     }
 }
