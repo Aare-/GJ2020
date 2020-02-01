@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using DG.Tweening;
+
 
 [RequireComponent(typeof(Rigidbody))]
 public class StaticObjectBehaviour : MonoBehaviour {
@@ -16,8 +18,13 @@ public class StaticObjectBehaviour : MonoBehaviour {
 
     private Collider _OtherColliderStopIgnoring;
 
+    [SerializeField] Transform[] nodes;
+
     private bool _HasToBeMoved = false;
-    
+    public bool XAxis = false;
+    public bool YAxis = false;
+    public bool ZAxis = false;
+
     public Rigidbody Body => _Body;
 
     public bool HasToBeMoved => _HasToBeMoved;
@@ -65,5 +72,11 @@ public class StaticObjectBehaviour : MonoBehaviour {
 
     public void WasMoved() {
         _HasToBeMoved = false;
+    }
+
+    public void Move(int moveIndex)
+    {
+        transform.DOMove(nodes[moveIndex].position, 2)
+  .SetEase(Ease.OutQuint);
     }
 }
