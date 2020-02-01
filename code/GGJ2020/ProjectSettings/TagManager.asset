@@ -7,6 +7,10 @@ TagManager:
   - Object
   - Static
   - Trigger
+<<<<<<< HEAD
+=======
+  - BlockingObject
+>>>>>>> d9192ea777d3f021ae69af98d11b2de1fb8fa62a
   layers:
   - Default
   - TransparentFX
@@ -16,8 +20,13 @@ TagManager:
   - UI
   - 
   - 
+<<<<<<< HEAD
   - Wall
   - 
+=======
+  - 
+  - Movable
+>>>>>>> d9192ea777d3f021ae69af98d11b2de1fb8fa62a
   - 
   - 
   - 

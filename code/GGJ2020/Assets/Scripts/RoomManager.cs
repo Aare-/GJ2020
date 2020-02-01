@@ -3,6 +3,9 @@
 [RequireComponent(typeof(Rigidbody), typeof(PositionHoldManager))]
 public class RoomManager : MonoBehaviour {
 
+    [SerializeField]
+    protected float _RotationSpeed;
+    
     [Range(0.0f, 0.5f)]
     public float Rotation;
 
@@ -21,6 +24,13 @@ public class RoomManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         transform.position = Vector3.zero;
+        
+        if (Input.GetKey(KeyCode.Space)) {
+            Rotation = _RotationSpeed;
+        }
+        else {
+            Rotation = 0.0f;
+        }
         
         if(_HoldManager.CanRotate)
             _Body.transform.Rotate(Vector3.up, Rotation);
