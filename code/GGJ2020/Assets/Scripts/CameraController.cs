@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour {
-
-<<<<<<< HEAD
-{
+    
     [SerializeField] Transform Center;
     [SerializeField] Transform LookPos;
-=======
+        
     [SerializeField]
     protected float _RotationSpeed;
-    
-    [SerializeField] 
-    Transform Center;
->>>>>>> d9192ea777d3f021ae69af98d11b2de1fb8fa62a
+
     // [SerializeField] Vector3 offset;
     Vector3 dir;
     float currentMouseXPos;
@@ -23,8 +18,6 @@ public class CameraController : MonoBehaviour {
 
     GameObject tempGameObject;
 
-
-
     // Update is called once per frame
     void Update()
     {
@@ -32,12 +25,9 @@ public class CameraController : MonoBehaviour {
         transform.LookAt(Vector3.zero);
 
         CameraRotation();
-<<<<<<< HEAD
         LookIntoWalls();
-=======
-
+        
         lastMouseXPos = Input.mousePosition.x;
->>>>>>> d9192ea777d3f021ae69af98d11b2de1fb8fa62a
     }
 
 
@@ -48,12 +38,15 @@ public class CameraController : MonoBehaviour {
         if (Input.GetMouseButton(2)) {
             var delta = currentMouseXPos - lastMouseXPos;
             
+            Debug.Log("Delta: "+delta);
+            
             transform.RotateAround(Center.position, Vector3.up, delta * _RotationSpeed);
         }
     }
 
-    void LookIntoWalls()
-    {
+    void LookIntoWalls() {
+        if (tempGameObject == null) return;
+        
         RaycastHit hit;
 
         if (Physics.Raycast(transform.position, dir, out hit))
@@ -66,6 +59,7 @@ public class CameraController : MonoBehaviour {
             }
             else
             {
+                
                 tempGameObject.GetComponent<MeshRenderer>().enabled = true;
             }
         }

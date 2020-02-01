@@ -211,8 +211,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ae4db9a7cc27f841bd06795e047c2ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _RotationSpeed: 0.15
   Center: {fileID: 1532933661}
+  LookPos: {fileID: 1532933661}
+  _RotationSpeed: 0.15
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
