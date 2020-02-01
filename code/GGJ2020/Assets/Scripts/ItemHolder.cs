@@ -10,6 +10,7 @@ using Cursor = UnityEngine.Cursor;
 public class ItemHolder : MonoBehaviour {
     [SerializeField]
     protected float _ObjectMoveSpeed;
+
     float currentMouseYPos;
     float lastMouseYPos;
     float currentMousePossition;
@@ -57,8 +58,7 @@ public class ItemHolder : MonoBehaviour {
             RaycastHit hit;
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit))
-            {
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, hitLayers)) {
                 if (hit.rigidbody != null && hit.collider.gameObject.layer==9)
                 {
                     tempObject = hit.collider.gameObject;

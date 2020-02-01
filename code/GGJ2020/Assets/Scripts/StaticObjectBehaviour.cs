@@ -74,9 +74,7 @@ public class StaticObjectBehaviour : MonoBehaviour {
         _HasToBeMoved = false;
     }
 
-    public void Move(int moveIndex)
-    {
-        transform.DOMove(nodes[moveIndex].position, 2)
-  .SetEase(Ease.OutQuint);
+    public void Move(int moveIndex) {
+        
     }
 }
