@@ -39,4 +39,8 @@ public class RoomManager : MonoBehaviour {
     public void BlockRotation() {
         _HoldManager.ResetPositions();
     }
+
+    private void OnCollisionEnter(Collision coll) {
+        Debug.Log("ROOM Collision " + coll.impulse + " impdec "+Mathf.Abs(coll.impulse.y));
+    }
 }

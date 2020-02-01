@@ -43,6 +43,8 @@ public class PositionHoldManager : MonoBehaviour {
     }
 
     public void ResetPositions() {
+        if (_CapturedData.Count == 0) return;
+        
         var resetData = _CapturedData[0];
         _CapturedData.Clear();
         _CapturedData.Add(resetData);
