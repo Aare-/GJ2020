@@ -1,30 +1,45 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class RoomManager : MonoBehaviour
-{
+[RequireComponent(typeof(Rigidbody))]
+public class RoomManager : MonoBehaviour {
+
+    public float AVelocity;
+    
+    public float RotateSpeed;
+    
     public bool IsRotatable;
+
+    private Quaternion _LastRotation; 
+
+    private Rigidbody _Body;
+
+    private bool _ShouldStopRotation = false;
+
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
+        _Body = GetComponent<Rigidbody>();
+
         IsRotatable = true;
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (IsRotatable)
-        {
-            if (Input.GetKey(KeyCode.R))
-            {
-                transform.Rotate(new Vector3(0, -2, 0));
-            }
-            else if (Input.GetKey(KeyCode.T))
-            {
-                transform.Rotate(new Vector3(0, 2, 0));
-            }
+    void Update() {
+
+        transform.position = Vector3.zero;
+
+        if (!_ShouldStopRotation) {
+            _Body.transform.Rotate(Vector3.up, AVelocity);
         }
-         
+    }
+
+    public void BlockRotation() {
+        //_ShouldStopRotation = true;
+        _Body.angularVelocity = Vector3.zero;
+        AVelocity = 0.0f;
+        transform.rotation = _LastRotation;
+    }
+
+    private void LateUpdate() {
+        _LastRotation = transform.rotation;
     }
 }
