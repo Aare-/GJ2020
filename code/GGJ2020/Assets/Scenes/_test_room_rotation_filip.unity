@@ -328,7 +328,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 20
   m_TargetDisplay: 0
@@ -378,6 +378,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Blocker (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879244, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879244, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_TagString
+      value: Static
       objectReference: {fileID: 0}
     - target: {fileID: 7265652753956879242, guid: 091a0c522bd87e340bc05a6e7d0191ad,
         type: 3}
@@ -967,6 +977,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Blocker
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879244, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879244, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_TagString
+      value: Static
       objectReference: {fileID: 0}
     - target: {fileID: 7265652753956879242, guid: 091a0c522bd87e340bc05a6e7d0191ad,
         type: 3}
