@@ -30,6 +30,7 @@ public class StaticObjectBehaviour : MonoBehaviour {
         _Collider = GetComponent<Collider>();
         
         _PHolderManager.RegisterStaticObject(this);
+        
     }
 
     // Update is called once per frame
@@ -60,5 +61,9 @@ public class StaticObjectBehaviour : MonoBehaviour {
                 Debug.Log("Collided, non-blocking "+coll.gameObject.tag, coll.gameObject);   
             }
         }
+    }
+
+    public void WasMoved() {
+        _HasToBeMoved = false;
     }
 }

@@ -37,9 +37,7 @@ public class CameraController : MonoBehaviour {
 
         if (Input.GetMouseButton(2)) {
             var delta = currentMouseXPos - lastMouseXPos;
-            
-            Debug.Log("Delta: "+delta);
-            
+
             transform.RotateAround(Center.position, Vector3.up, delta * _RotationSpeed);
         }
     }
