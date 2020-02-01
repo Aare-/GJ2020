@@ -6,9 +6,10 @@ public class CameraController : MonoBehaviour
 
 {
     [SerializeField] Transform Center;
-    [SerializeField] Vector3 offset;
+    // [SerializeField] Vector3 offset;
 
-
+    float currentMouseXPos;
+    float lastMouseXPos;
 
     // Start is called before the first frame update
     void Start()
@@ -47,5 +48,40 @@ public class CameraController : MonoBehaviour
 
         }
         transform.LookAt(Vector3.zero);
+
+        CameraRotation();
+    }
+
+
+    void CameraRotation()
+    {
+        currentMouseXPos = Input.mousePosition.x;
+        if (Input.GetMouseButtonDown(2))
+        {
+           // currentMouseXPos = Input.mousePosition.x;
+            lastMouseXPos = currentMouseXPos;
+            Debug.Log("rotate");
+        }
+
+       else if (Input.GetMouseButton(2))
+        {
+            
+            if (Mathf.Abs(currentMouseXPos - lastMouseXPos) > 0.1f)
+            {
+                Debug.Log("rotating");
+                if (currentMouseXPos - lastMouseXPos > 0)
+                {
+                    transform.RotateAround(Center.position, Vector3.up, -5);
+                    Debug.Log("rotating");
+                }
+                else if (currentMouseXPos - lastMouseXPos < 0)
+                {
+                    transform.RotateAround(Center.position, Vector3.up, 5);
+                }
+                lastMouseXPos = currentMouseXPos;
+            }
+
+        }
+
     }
 }
