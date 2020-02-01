@@ -1,25 +1,23 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(PositionHoldManager))]
 public class RoomManager : MonoBehaviour {
 
-    public float AVelocity;
-    
-    public float RotateSpeed;
-    
-    public bool IsRotatable;
-
-    private Quaternion _LastRotation; 
+    [Range(-0.5f, 0.5f)]
+    public float Rotation;
 
     private Rigidbody _Body;
 
     private bool _ShouldStopRotation = false;
 
+    private PositionHoldManager _HoldManager;
+
+    public Rigidbody Body => _Body;
+
     // Start is called before the first frame update
     void Start() {
+        _HoldManager = GetComponent<PositionHoldManager>();
         _Body = GetComponent<Rigidbody>();
-
-        IsRotatable = true;
     }
 
     // Update is called once per frame
@@ -28,18 +26,11 @@ public class RoomManager : MonoBehaviour {
         transform.position = Vector3.zero;
 
         if (!_ShouldStopRotation) {
-            _Body.transform.Rotate(Vector3.up, AVelocity);
+            _Body.transform.Rotate(Vector3.up, Rotation);
         }
     }
 
     public void BlockRotation() {
-        //_ShouldStopRotation = true;
-        _Body.angularVelocity = Vector3.zero;
-        AVelocity = 0.0f;
-        transform.rotation = _LastRotation;
-    }
-
-    private void LateUpdate() {
-        _LastRotation = transform.rotation;
+        _HoldManager.ResetPositions();
     }
 }
