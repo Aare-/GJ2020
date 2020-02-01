@@ -16,7 +16,11 @@ public class StaticObjectBehaviour : MonoBehaviour {
 
     private Collider _OtherColliderStopIgnoring;
 
+    private bool _HasToBeMoved = false;
+    
     public Rigidbody Body => _Body;
+
+    public bool HasToBeMoved => _HasToBeMoved;
 
     // Start is called before the first frame update
     void Start() {
@@ -45,6 +49,8 @@ public class StaticObjectBehaviour : MonoBehaviour {
             
             // we block only collisions that influence the xy position
             if (Math.Abs(Mathf.Abs(coll.impulse.y)) < 1.0f) {
+                _HasToBeMoved = true;
+                
                 _RoomManager.BlockRotation();
 
                 //Physics.IgnoreCollision(coll.collider, this._Collider, true);

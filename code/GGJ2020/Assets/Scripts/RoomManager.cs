@@ -3,12 +3,10 @@
 [RequireComponent(typeof(Rigidbody), typeof(PositionHoldManager))]
 public class RoomManager : MonoBehaviour {
 
-    [Range(-0.5f, 0.5f)]
+    [Range(0.0f, 0.5f)]
     public float Rotation;
 
     private Rigidbody _Body;
-
-    private bool _ShouldStopRotation = false;
 
     private PositionHoldManager _HoldManager;
 
@@ -22,12 +20,10 @@ public class RoomManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
         transform.position = Vector3.zero;
-
-        if (!_ShouldStopRotation) {
+        
+        if(_HoldManager.CanRotate)
             _Body.transform.Rotate(Vector3.up, Rotation);
-        }
     }
 
     public void BlockRotation() {

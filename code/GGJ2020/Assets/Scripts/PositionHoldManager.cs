@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(RoomManager))]
@@ -11,7 +12,11 @@ public class PositionHoldManager : MonoBehaviour {
         public List<Quaternion> BlockingObjectsRotation;
 
         public List<Vector3> BlockingObjectsPosition;
-    }    
+    }
+
+    public bool CanRotate {
+        get { return _StaticObjects.All(x => !x.HasToBeMoved); }
+    }
     
     private List<FrameData> _CapturedData = new List<FrameData>();
 
