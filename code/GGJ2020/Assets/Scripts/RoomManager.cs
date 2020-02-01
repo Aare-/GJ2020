@@ -25,6 +25,11 @@ public class RoomManager : MonoBehaviour
                 transform.Rotate(new Vector3(0, 2, 0));
             }
         }
+
+        else if (Input.GetMouseButtonDown(0))
+        {
+            IsRotatable = true;
+        }
          
     }
 }

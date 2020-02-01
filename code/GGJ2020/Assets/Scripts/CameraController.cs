@@ -22,11 +22,11 @@ public class CameraController : MonoBehaviour
        
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Translate(new Vector3(0, 0, .5f));
+            //transform.Translate(new Vector3(0, 0, .5f));
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(new Vector3(0, 0, -.5f));
+           // transform.Translate(new Vector3(0, 0, -.5f));
         }
         else if (Input.GetKey(KeyCode.A))
         {
@@ -46,5 +46,6 @@ public class CameraController : MonoBehaviour
             transform.RotateAround(Center.position, Vector3.up, 5);
 
         }
+        transform.LookAt(Vector3.zero);
     }
 }
