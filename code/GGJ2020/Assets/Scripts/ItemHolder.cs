@@ -2,19 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
 using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
+
 
 public class ItemHolder : MonoBehaviour {
     [SerializeField]
     protected float _ObjectMoveSpeed;
-    
+    float currentMouseYPos;
+    float lastMouseYPos;
+    float currentMousePossition;
+
+    int currentPos;
+
     bool IsHolding;
     GameObject tempObject;
     GameObject selectedObject;
+
     public LayerMask hitLayers;
 
     Vector3 FirstClick;
@@ -25,7 +30,9 @@ public class ItemHolder : MonoBehaviour {
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentMouseYPos = Input.mousePosition.y;
+        lastMouseYPos = currentMouseYPos;
+        currentPos = 0;
     }
 
     // Update is called once per frame
@@ -38,6 +45,7 @@ public class ItemHolder : MonoBehaviour {
             //MoveObject();
             PhysicMoveObject();
         }
+        currentMouseYPos = Input.mousePosition.y;
 
         lastMousePos = Input.mousePosition;
     }
@@ -87,12 +95,36 @@ public class ItemHolder : MonoBehaviour {
 
         mouseDeltaPos = mouseDeltaPos * _ObjectMoveSpeed;
 
+        currentMousePossition = Input.mousePosition.y;
+
         var movVector = new Vector2(mouseDeltaPos.x, mouseDeltaPos.y);
         movVector = movVector.Rotate(-Camera.main.transform.rotation.eulerAngles.y);
         
         var body = selectedObject.GetComponent<Rigidbody>();
 
-        body.transform.position += new Vector3(movVector.x, 0, movVector.y);
+        if (selectedObject.GetComponent<StaticObjectBehaviour>().YAxis)
+        {
+            body.transform.position += new Vector3(0, movVector.x, 0);
+        }
+        else if (selectedObject.GetComponent<StaticObjectBehaviour>().XAxis)
+        {
+            body.transform.position += new Vector3(movVector.x, 0, movVector.y);
+        }
+        else if(currentMousePossition-lastMouseYPos<0)
+        {
+            lastMouseYPos = currentMousePossition;
+            currentPos++;
+            selectedObject.GetComponent<StaticObjectBehaviour>().Move(currentPos);
+
+        }
+        else if (currentMousePossition - lastMouseYPos > 0)
+        {
+            lastMouseYPos = currentMousePossition;
+            currentPos--;
+            selectedObject.GetComponent<StaticObjectBehaviour>().Move(currentPos);
+
+        }
+        //body.transform.position += new Vector3(movVector.x, 0, movVector.y);
     }
     
     void MoveObject() {
@@ -104,11 +136,29 @@ public class ItemHolder : MonoBehaviour {
         {
             if (selectedObject.tag=="Static")
             {
-                selectedObject.transform.position = new Vector3(hit.point.x, selectedObject.transform.position.y, hit.point.z);
+                //selectedObject.transform.position = new Vector3(hit.point.x, selectedObject.transform.position.y, hit.point.z);
+                if (selectedObject.GetComponent<StaticObjectBehaviour>().XAxis)
+                {
+                    Debug.Log("On X movement");
+                    selectedObject.transform.position = new Vector3(hit.point.x, selectedObject.transform.position.y, selectedObject.transform.position.z);
+                }
+                else if (selectedObject.GetComponent<StaticObjectBehaviour>().YAxis)
+                {
+                    Debug.Log("On Y movement");
 
+                    selectedObject.transform.position = new Vector3(selectedObject.transform.position.x, hit.point.y, selectedObject.transform.position.z);
+                }
+                else if (selectedObject.GetComponent<StaticObjectBehaviour>().ZAxis)
+                {
+                    Debug.Log("On Z movement");
+
+                    selectedObject.transform.position = new Vector3(selectedObject.transform.position.x, selectedObject.transform.position.y, hit.point.z);
+                }
+
+                
             }
 
-            /*
+            
             if (selectedObject.tag=="Trigger" && Mathf.Abs(currentMouseYPos - lastMouseYPos)>0.1f )
             {
                 Debug.Log("trigger object");
@@ -124,7 +174,8 @@ public class ItemHolder : MonoBehaviour {
                 }
                 lastMouseYPos = currentMouseYPos;
             }
-            */
+            
         }
     }
+    
 }
