@@ -21,12 +21,13 @@ public class CameraController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        dir = LookPos.position - transform.position;
+        var position = transform.position;
+        dir = LookPos.position - position;
         transform.LookAt(Vector3.zero);
 
         CameraRotation();
         LookIntoWalls();
-        
+
         lastMouseXPos = Input.mousePosition.x;
     }
 
@@ -53,7 +54,6 @@ public class CameraController : MonoBehaviour {
             {
                 hit.collider.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 tempGameObject = hit.collider.gameObject;
-
             }
             else
             {

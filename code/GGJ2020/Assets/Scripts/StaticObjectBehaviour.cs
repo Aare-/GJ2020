@@ -53,10 +53,10 @@ public class StaticObjectBehaviour : MonoBehaviour {
         if (coll.gameObject.CompareTag("Object")) {
             var xyImpulse = new Vector2(coll.impulse.x, coll.impulse.z);
 
-            Debug.Log("Collision " + coll.impulse);
+            Debug.Log("Collision " + coll.impulse + " impdec "+Mathf.Abs(coll.impulse.y));
             
             // we block only collisions that influence the xy position
-            if (Math.Abs(Mathf.Abs(coll.impulse.y)) < 1.0f) {
+            if (Mathf.Abs(coll.impulse.y) < 1.0f) {
                 _HasToBeMoved = true;
                 
                 _RoomManager.BlockRotation();
