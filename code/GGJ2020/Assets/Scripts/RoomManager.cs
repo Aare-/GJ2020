@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using TinyMessenger;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(PositionHoldManager))]
 public class RoomManager : MonoBehaviour {
 
+    [SerializeField] protected float _InitialRotation = 0.0f;
+    
     [SerializeField]
     protected float _RotationSpeed;
     
@@ -13,34 +16,48 @@ public class RoomManager : MonoBehaviour {
 
     private PositionHoldManager _HoldManager;
 
+    private float _AlreadyRotated = 0.0f;
+
     public Rigidbody Body => _Body;
+
+    public float AlreadyRotated => _AlreadyRotated;
 
     // Start is called before the first frame update
     void Start() {
         _HoldManager = GetComponent<PositionHoldManager>();
         _Body = GetComponent<Rigidbody>();
+        
+        _Body.transform.rotation = Quaternion.Euler(0, _InitialRotation, 0);
+        
+        TinyMessengerHub
+            .Instance
+            .Publish(Msg.RotationProgress.Get(0.0f));
     }
 
     // Update is called once per frame
     void Update() {
         transform.position = Vector3.zero;
-        
-        if (Input.GetKey(KeyCode.Space)) {
-            Rotation = _RotationSpeed;
+
+        switch (GameManager.Instance.Mode){
+            case GameManager.GameMode.GAME:
+                Rotation = Input.GetKey(KeyCode.Space) ? 
+                    _RotationSpeed : 
+                    0.0f;
+
+                if (_HoldManager.CanRotate){
+                    _Body.transform.Rotate(Vector3.up, Rotation);
+                    _AlreadyRotated += Rotation;
+                }
+
+                TinyMessengerHub
+                    .Instance
+                    .Publish(Msg.RotationProgress.Get(_AlreadyRotated / 360.0f));
+                
+                break;
         }
-        else {
-            Rotation = 0.0f;
-        }
-        
-        if(_HoldManager.CanRotate)
-            _Body.transform.Rotate(Vector3.up, Rotation);
     }
 
     public void BlockRotation() {
         _HoldManager.ResetPositions();
-    }
-
-    private void OnCollisionEnter(Collision coll) {
-        Debug.Log("ROOM Collision " + coll.impulse + " impdec "+Mathf.Abs(coll.impulse.y));
     }
 }

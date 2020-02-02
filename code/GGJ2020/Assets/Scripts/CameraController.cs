@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour {
-    
+
+    [SerializeField] protected float _AttracLoopRotationSpeed;
     [SerializeField] Transform Center;
     [SerializeField] Transform LookPos;
         
@@ -25,12 +26,20 @@ public class CameraController : MonoBehaviour {
         dir = LookPos.position - position;
         transform.LookAt(Vector3.zero);
 
-        CameraRotation();
+        switch (GameManager.Instance.Mode){
+            case GameManager.GameMode.ATTRACT:
+                transform.RotateAround(Center.position, Vector3.up, Time.deltaTime * _AttracLoopRotationSpeed);
+                break;
+            
+            case GameManager.GameMode.GAME:
+                CameraRotation();        
+                break;
+        }
+        
         LookIntoWalls();
 
         lastMouseXPos = Input.mousePosition.x;
     }
-
 
     void CameraRotation()
     {

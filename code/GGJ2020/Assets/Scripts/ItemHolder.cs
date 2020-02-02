@@ -22,6 +22,7 @@ public class ItemHolder : MonoBehaviour {
     GameObject selectedObject;
 
     public LayerMask hitLayers;
+    public LayerMask wallMask;
 
     Vector3 FirstClick;
 
@@ -37,12 +38,11 @@ public class ItemHolder : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
+        if (GameManager.Instance.Mode != GameManager.GameMode.GAME) return;
+        
         ChooseObject();
-        if (selectedObject != null)
-        {
-            Debug.Log(selectedObject.name);
+        if (selectedObject != null) {
             //MoveObject();
             PhysicMoveObject();
         }
@@ -76,14 +76,12 @@ public class ItemHolder : MonoBehaviour {
             }
         }
 
-        if (Input.GetMouseButtonUp(0))
-        {
+        if (Input.GetMouseButtonUp(0)) {
             if (selectedObject != null) {
                 var body = selectedObject.GetComponent<Rigidbody>();
                 body.angularVelocity = Vector2.zero;
             }
-            
-            
+
             selectedObject = null;
             IsHolding = false;
             Cursor.visible = true;
@@ -92,90 +90,37 @@ public class ItemHolder : MonoBehaviour {
 
     void PhysicMoveObject() {
         var mouseDeltaPos = (Vector2)Input.mousePosition - lastMousePos;
-
+        var body = selectedObject.GetComponent<Rigidbody>();
+        var collider = selectedObject.GetComponent<Collider>();
+        
         mouseDeltaPos = mouseDeltaPos * _ObjectMoveSpeed;
 
         currentMousePossition = Input.mousePosition.y;
 
+        //adjust movement for camera 
         var movVector = new Vector2(mouseDeltaPos.x, mouseDeltaPos.y);
         movVector = movVector.Rotate(-Camera.main.transform.rotation.eulerAngles.y);
         
-        var body = selectedObject.GetComponent<Rigidbody>();
+        var movDif = new Vector3(movVector.x, 0, movVector.y);
+        var newPosition = body.transform.position + movDif;
+        var extends = collider.bounds.extents;//new Vector3(collider.bounds.extents.x, 0.1f, collider.bounds.extents.z);
+        
+        Debug.Log("EXT: "+extends);
+        
+        // check if new position would collide, if so dont move there
+        if (!Physics.BoxCast(
+                newPosition,
+                extends,
+                movDif.normalized,
+                body.gameObject.transform.rotation,
+                movDif.magnitude,
+                wallMask)) {
+            Debug.Log("BOX CAST PASSED");
+            body.transform.position = newPosition;
+        }
+        else{
+            Debug.Log("BLOCK!");
+        }
 
-        if (selectedObject.GetComponent<StaticObjectBehaviour>().YAxis)
-        {
-            body.transform.position += new Vector3(0, movVector.x, 0);
-        }
-        else if (selectedObject.GetComponent<StaticObjectBehaviour>().XAxis)
-        {
-            body.transform.position += new Vector3(movVector.x, 0, movVector.y);
-        }
-        else if(currentMousePossition-lastMouseYPos<0)
-        {
-            lastMouseYPos = currentMousePossition;
-            currentPos++;
-            selectedObject.GetComponent<StaticObjectBehaviour>().Move(currentPos);
-
-        }
-        else if (currentMousePossition - lastMouseYPos > 0)
-        {
-            lastMouseYPos = currentMousePossition;
-            currentPos--;
-            selectedObject.GetComponent<StaticObjectBehaviour>().Move(currentPos);
-
-        }
-        //body.transform.position += new Vector3(movVector.x, 0, movVector.y);
     }
-    
-    void MoveObject() {
-        //selectedObject.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(Input.mousePosition.x, selectedObject.transform.position.y, Input.mousePosition.z));
-        Vector3 mouse = Input.mousePosition;
-        Ray castPoint = Camera.main.ScreenPointToRay(mouse);
-        RaycastHit hit;
-        if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, hitLayers))
-        {
-            if (selectedObject.tag=="Static")
-            {
-                //selectedObject.transform.position = new Vector3(hit.point.x, selectedObject.transform.position.y, hit.point.z);
-                if (selectedObject.GetComponent<StaticObjectBehaviour>().XAxis)
-                {
-                    Debug.Log("On X movement");
-                    selectedObject.transform.position = new Vector3(hit.point.x, selectedObject.transform.position.y, selectedObject.transform.position.z);
-                }
-                else if (selectedObject.GetComponent<StaticObjectBehaviour>().YAxis)
-                {
-                    Debug.Log("On Y movement");
-
-                    selectedObject.transform.position = new Vector3(selectedObject.transform.position.x, hit.point.y, selectedObject.transform.position.z);
-                }
-                else if (selectedObject.GetComponent<StaticObjectBehaviour>().ZAxis)
-                {
-                    Debug.Log("On Z movement");
-
-                    selectedObject.transform.position = new Vector3(selectedObject.transform.position.x, selectedObject.transform.position.y, hit.point.z);
-                }
-
-                
-            }
-
-            
-            if (selectedObject.tag=="Trigger" && Mathf.Abs(currentMouseYPos - lastMouseYPos)>0.1f )
-            {
-                Debug.Log("trigger object");
-                
-
-                if (currentMouseYPos-lastMouseYPos>0)
-                {
-                    selectedObject.transform.RotateAround(selectedObject.transform.parent.GetChild(0).position, Vector3.up, -5);
-                }
-                else if (currentMouseYPos-lastMouseYPos<0)
-                {
-                    selectedObject.transform.RotateAround(selectedObject.transform.parent.GetChild(0).position, Vector3.up, 5);
-                }
-                lastMouseYPos = currentMouseYPos;
-            }
-            
-        }
-    }
-    
 }

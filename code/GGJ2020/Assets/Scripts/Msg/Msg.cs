@@ -5,34 +5,61 @@ using UnityEngine;
 
 public class Msg {
 
-  
-    /*
-    public class ShowScreenWorker : ITinyMessage {
-        private static ShowScreenWorker _Instance;
+    
+    public class ObjectCollided : ITinyMessage {
+        private static ObjectCollided _Instance;
 
-        public Type ControllerClass;
-        public bool Animated;
-        public float RemainingAnimationTime;
-        public object[] ExtraValues;
+        public StaticObjectBehaviour CollidingObject;
 
         #region Implementation
-        public static ShowScreenWorker Get(Type controllerClass, bool animated, float remainingAnimTime, object[] extra) {
+        public static ObjectCollided Get(StaticObjectBehaviour sObj) {
             if (_Instance == null)
-                _Instance = new ShowScreenWorker();
+                _Instance = new ObjectCollided();
 
-            _Instance.ControllerClass = controllerClass;
-            _Instance.Animated = animated;
-            _Instance.RemainingAnimationTime = remainingAnimTime;
-            _Instance.ExtraValues = extra;
+            _Instance.CollidingObject = sObj;
 
             return _Instance;
         }
 
-        public object Sender {
-            get { return null; }
-        }
+        public object Sender => null;
+
         #endregion        
     }
-    */
+    
+    public class RotationProgress : ITinyMessage {
+        private static RotationProgress _Instance;
+
+        public float Progress;
+
+        #region Implementation
+        public static RotationProgress Get(float newProgress) {
+            if (_Instance == null)
+                _Instance = new RotationProgress();
+
+            _Instance.Progress = Mathf.Clamp01(newProgress);
+
+            return _Instance;
+        }
+
+        public object Sender => null;
+
+        #endregion        
+    }
+    
+    public class StartGame : ITinyMessage {
+        private static StartGame _Instance;
+
+        #region Implementation
+        public static StartGame Get() {
+            if (_Instance == null)
+                _Instance = new StartGame();
+
+            return _Instance;
+        }
+
+        public object Sender => null;
+
+        #endregion        
+    }
 
 }

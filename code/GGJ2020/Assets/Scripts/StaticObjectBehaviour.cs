@@ -4,10 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using DG.Tweening;
+using TinyMessenger;
 
 
 [RequireComponent(typeof(Rigidbody))]
 public class StaticObjectBehaviour : MonoBehaviour {
+
+    [Header("Config")] 
+    public Sprite Icon;
+    
     private RoomManager _RoomManager;
     
     private PositionHoldManager _PHolderManager;
@@ -21,9 +26,6 @@ public class StaticObjectBehaviour : MonoBehaviour {
     [SerializeField] Transform[] nodes;
 
     private bool _HasToBeMoved = false;
-    public bool XAxis = false;
-    public bool YAxis = false;
-    public bool ZAxis = false;
 
     public Rigidbody Body => _Body;
 
@@ -49,24 +51,13 @@ public class StaticObjectBehaviour : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision coll) {
-        
-        if (coll.gameObject.CompareTag("Object")) {
-            var xyImpulse = new Vector2(coll.impulse.x, coll.impulse.z);
-
-            Debug.Log("Collision " + coll.impulse + " impdec "+Mathf.Abs(coll.impulse.y));
+        if(coll.gameObject.layer == 8 && Mathf.Abs(coll.relativeVelocity.y) < 0.1f) {
+            TinyMessengerHub
+                .Instance
+                .Publish(Msg.ObjectCollided.Get(this));
             
-            // we block only collisions that influence the xy position
-            if (Mathf.Abs(coll.impulse.y) < 1.0f) {
-                _HasToBeMoved = true;
-                
-                _RoomManager.BlockRotation();
-
-                //Physics.IgnoreCollision(coll.collider, this._Collider, true);
-                //_OtherColliderStopIgnoring = coll.collider;
-            }
-            else {
-                Debug.Log("Collided, non-blocking "+coll.gameObject.tag, coll.gameObject);   
-            }
+            _HasToBeMoved = true;
+            _RoomManager.BlockRotation();
         }
     }
 

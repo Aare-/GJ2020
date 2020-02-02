@@ -8,14 +8,20 @@ public class Wall : MonoBehaviour {
 
     private MeshRenderer _Mesh;
 
+    private RoomManager _Manager;
+    
     protected void Awake() {
         _Mesh = GetComponent<MeshRenderer>();
+    }
+
+    protected void Start() {
+        _Manager = FindObjectOfType<RoomManager>();
     }
 
     protected void Update() {
         if (Camera.main == null) return;
         
-        var cameraRotationY = Camera.main.transform.rotation.eulerAngles.y;
+        var cameraRotationY = Camera.main.transform.rotation.eulerAngles.y - _Manager.AlreadyRotated;
 
         while (cameraRotationY < 0)
             cameraRotationY += 360;
