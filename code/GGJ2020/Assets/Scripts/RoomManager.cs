@@ -1,4 +1,5 @@
-﻿using TinyMessenger;
+﻿using System;
+using TinyMessenger;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(PositionHoldManager))]
@@ -40,26 +41,33 @@ public class RoomManager : MonoBehaviour {
 
         switch (GameManager.Instance.Mode){
             case GameManager.GameMode.GAME:
+                
                 Rotation = Input.GetKey(KeyCode.Space) ? 
                     _RotationSpeed : 
                     0.0f;
 
-                if (_HoldManager.CanRotate){
+                if (_HoldManager.CanRotate && ItemHolder.selectedObject == null){
                     _Body.transform.Rotate(Vector3.up, Rotation);
-                    _AlreadyRotated += Rotation;
                 }
 
+                var rot = _Body.transform.localEulerAngles.y;
+                while (rot < 0)
+                    rot += 360;
+                rot %= 360;
+
+                _AlreadyRotated = rot;
+                
                 TinyMessengerHub
                     .Instance
-                    .Publish(Msg.RotationProgress.Get(_AlreadyRotated / 360.0f));
-                
+                    .Publish(Msg.RotationProgress.Get(rot / 360.0f));  
+
                 break;
         }
     }
 
     public void BlockRotation() {
         _HoldManager.ResetPositions();
-        
+
         TinyMessengerHub
             .Instance
             .Publish(Msg.PlaySound.Get(SoundController.Sounds.COLLIDER_HIT));

@@ -10,6 +10,9 @@ using Cursor = UnityEngine.Cursor;
 public class ItemHolder : MonoBehaviour {
     [SerializeField]
     protected float _ObjectMoveSpeed;
+    
+    [SerializeField]
+    protected float _PathObjectMoveSpeed;
 
     [SerializeField] protected float _MaxMovementSpeed = 5.0f;
     
@@ -31,7 +34,6 @@ public class ItemHolder : MonoBehaviour {
 
     Vector2 currentMousePos;
     Vector2 lastMousePos;
-    Collider[] colliders = new Collider[]{null, null, null, null};
 
     // Start is called before the first frame update
     void Start()
@@ -72,6 +74,8 @@ public class ItemHolder : MonoBehaviour {
                         IsHolding = true;
                         Cursor.visible = false;
                         
+                        selectedObject.ShowPath();
+                        
                         TinyMessengerHub
                             .Instance
                             .Publish(Msg.PlaySound.Get(SoundController.Sounds.PICK_UP_OBJ));
@@ -83,6 +87,7 @@ public class ItemHolder : MonoBehaviour {
         if (Input.GetMouseButtonUp(0)) {
             if (selectedObject != null) {
                 selectedObject.Body.angularVelocity = Vector2.zero;
+                selectedObject.HidePath();
             }
 
             selectedObject = null;
@@ -97,7 +102,12 @@ public class ItemHolder : MonoBehaviour {
 
     void PhysicMoveObject() {
         var mouseDeltaPos = (Vector2)Input.mousePosition - lastMousePos;
-        var collider = selectedObject.GetComponent<Collider>();
+
+        if (selectedObject.Path != null) {
+            selectedObject.MovePercent =
+                Mathf.Clamp01(selectedObject.MovePercent + mouseDeltaPos.x * _PathObjectMoveSpeed);
+            return;
+        }
         
         mouseDeltaPos = mouseDeltaPos * _ObjectMoveSpeed;
 
@@ -117,29 +127,9 @@ public class ItemHolder : MonoBehaviour {
         
         var movDif = new Vector3(movVector.x, 0, movVector.y);
         var newPosition = selectedObject.Body.transform.position + movDif;
-        var bounds = collider.bounds;
-        var extends = new Vector3(
-            bounds.extents.x, 
-            bounds.extents.y * 0.5f, 
-            bounds.extents.z);
 
-        var size = Physics.OverlapBoxNonAlloc(
-            newPosition, 
-            extends, 
-            colliders, 
-            selectedObject.Body.gameObject.transform.rotation);
-
-        if (size > 0){
-            for (var i = 0; i < size; i++){
-                var collision = colliders[i];
-                
-                // ignore self
-                if (collision.gameObject == selectedObject.Body.gameObject){
-                    continue;
-                }
-
-                return;   
-            }
+        if (!selectedObject.CanMoveToNewPosition(newPosition)){
+            return;
         }
 
         selectedObject
