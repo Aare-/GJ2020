@@ -28,6 +28,7 @@ public class CameraController : MonoBehaviour {
 
         switch (GameManager.Instance.Mode){
             case GameManager.GameMode.ATTRACT:
+            case GameManager.GameMode.VICTORY:
                 transform.RotateAround(Center.position, Vector3.up, Time.deltaTime * _AttracLoopRotationSpeed);
                 break;
             

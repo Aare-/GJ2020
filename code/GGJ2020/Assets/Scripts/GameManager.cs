@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour {
     
     [SerializeField] 
     protected CanvasGroup _GameUI;
+    
+    [SerializeField]
+    protected CanvasGroup _VictoryUI;
 
     private GameMode _Mode = GameMode.NONE;
 
@@ -31,11 +34,23 @@ public class GameManager : MonoBehaviour {
                 case GameMode.ATTRACT:
                     _AttractUI.gameObject.SetActive(true);
                     _GameUI.gameObject.SetActive(false);
+                    _VictoryUI.gameObject.SetActive(false);
                     break;
                 
                 case GameMode.GAME:
                     _AttractUI.gameObject.SetActive(false);
                     _GameUI.gameObject.SetActive(true);
+                    _VictoryUI.gameObject.SetActive(false);
+                    break;
+                
+                case GameMode.VICTORY:
+                    _AttractUI.gameObject.SetActive(false);
+                    _GameUI.gameObject.SetActive(false);
+                    _VictoryUI.gameObject.SetActive(true);
+                    
+                    BackgroundIndicator
+                        .Instance
+                        .TurnLightOn();
                     break;
             }
         }
@@ -47,6 +62,22 @@ public class GameManager : MonoBehaviour {
 
     protected void Start() {
         Mode = GameMode.ATTRACT;
+    }
+
+    protected void OnEnable() {
+        TinyTokenManager
+            .Instance
+            .Register(this, (Msg.RotationProgress m) => {
+                if (m.Progress > 0.95f){
+                    Mode = GameMode.VICTORY;
+                }
+            });
+    }
+
+    protected void OnDisable() {
+        TinyTokenManager
+            .Instance
+            .UnregisterAll(this);
     }
 
     public void StartGame() {
