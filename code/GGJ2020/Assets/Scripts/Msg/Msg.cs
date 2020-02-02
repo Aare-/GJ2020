@@ -62,4 +62,29 @@ public class Msg {
         #endregion        
     }
 
+    
+    public class PlaySound : ITinyMessage {
+        private static PlaySound _Instance;
+
+        public SoundController.Sounds Sound;
+        public float Volume;
+
+        #region Implementation
+        public static PlaySound Get(
+            SoundController.Sounds sound,
+            float volume = 1.0f) {
+            if (_Instance == null)
+                _Instance = new PlaySound();
+
+            _Instance.Sound = sound;
+            _Instance.Volume = volume;
+
+            return _Instance;
+        }
+
+        public object Sender {
+            get { return null; }
+        }
+        #endregion
+    }
 }

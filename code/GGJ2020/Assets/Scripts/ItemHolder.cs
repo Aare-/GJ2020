@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+using TinyMessenger;
 using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
 
@@ -71,6 +71,10 @@ public class ItemHolder : MonoBehaviour {
                         selectedObject = tempObject.GetComponent<StaticObjectBehaviour>();
                         IsHolding = true;
                         Cursor.visible = false;
+                        
+                        TinyMessengerHub
+                            .Instance
+                            .Publish(Msg.PlaySound.Get(SoundController.Sounds.PICK_UP_OBJ));
                     }
                 }
             }
@@ -84,6 +88,10 @@ public class ItemHolder : MonoBehaviour {
             selectedObject = null;
             IsHolding = false;
             Cursor.visible = true;
+            
+            TinyMessengerHub
+                .Instance
+                .Publish(Msg.PlaySound.Get(SoundController.Sounds.PUT_DOWN_OBJ));
         }
     }
 

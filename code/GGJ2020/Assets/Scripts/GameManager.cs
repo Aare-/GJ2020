@@ -55,6 +55,10 @@ public class GameManager : MonoBehaviour {
         TinyMessengerHub
             .Instance
             .Publish(Msg.StartGame.Get());
+        
+        TinyMessengerHub
+            .Instance
+            .Publish(Msg.PlaySound.Get(SoundController.Sounds.BULB_BREAK));
     }
 
     protected void Update() {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UIElements;
-using DG.Tweening;
+﻿using UnityEngine;
 using TinyMessenger;
 
 
@@ -12,6 +7,15 @@ public class StaticObjectBehaviour : MonoBehaviour {
 
     [Header("Config")] 
     public Sprite Icon;
+
+    [Header("Movement Path")] 
+    public bool UsesPath;
+    
+    public Transform Path;
+
+    public Vector3 MovementVector;
+
+    public float MovePosition;
     
     private RoomManager _RoomManager;
     
@@ -22,8 +26,6 @@ public class StaticObjectBehaviour : MonoBehaviour {
     private Collider _Collider;
 
     private Collider _OtherColliderStopIgnoring;
-
-    [SerializeField] Transform[] nodes;
 
     private bool _HasToBeMoved = false;
 
@@ -39,6 +41,8 @@ public class StaticObjectBehaviour : MonoBehaviour {
         _Collider = GetComponent<Collider>();
         
         _PHolderManager.RegisterStaticObject(this);
+        
+        Path.gameObject.SetActive(false);
         
     }
 

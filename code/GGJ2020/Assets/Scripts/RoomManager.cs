@@ -59,5 +59,9 @@ public class RoomManager : MonoBehaviour {
 
     public void BlockRotation() {
         _HoldManager.ResetPositions();
+        
+        TinyMessengerHub
+            .Instance
+            .Publish(Msg.PlaySound.Get(SoundController.Sounds.COLLIDER_HIT));
     }
 }
