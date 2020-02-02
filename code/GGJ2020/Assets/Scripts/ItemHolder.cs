@@ -11,6 +11,8 @@ public class ItemHolder : MonoBehaviour {
     [SerializeField]
     protected float _ObjectMoveSpeed;
 
+    [SerializeField] protected float _MaxMovementSpeed = 5.0f;
+    
     float currentMouseYPos;
     float lastMouseYPos;
     float currentMousePossition;
@@ -19,7 +21,8 @@ public class ItemHolder : MonoBehaviour {
 
     bool IsHolding;
     GameObject tempObject;
-    GameObject selectedObject;
+    
+    public  static StaticObjectBehaviour selectedObject;
 
     public LayerMask hitLayers;
     public LayerMask wallMask;
@@ -28,6 +31,7 @@ public class ItemHolder : MonoBehaviour {
 
     Vector2 currentMousePos;
     Vector2 lastMousePos;
+    Collider[] colliders = new Collider[]{null, null, null, null};
 
     // Start is called before the first frame update
     void Start()
@@ -43,11 +47,10 @@ public class ItemHolder : MonoBehaviour {
         
         ChooseObject();
         if (selectedObject != null) {
-            //MoveObject();
             PhysicMoveObject();
         }
+        
         currentMouseYPos = Input.mousePosition.y;
-
         lastMousePos = Input.mousePosition;
     }
 
@@ -63,14 +66,11 @@ public class ItemHolder : MonoBehaviour {
                 {
                     tempObject = hit.collider.gameObject;
 
-                    if (Input.GetMouseButtonDown(0))
-                    {
+                    if (Input.GetMouseButtonDown(0)) {
                         FirstClick = Input.mousePosition;
-                        selectedObject = tempObject;
+                        selectedObject = tempObject.GetComponent<StaticObjectBehaviour>();
                         IsHolding = true;
                         Cursor.visible = false;
-
-                        selectedObject.GetComponent<StaticObjectBehaviour>().WasMoved();
                     }
                 }
             }
@@ -78,8 +78,7 @@ public class ItemHolder : MonoBehaviour {
 
         if (Input.GetMouseButtonUp(0)) {
             if (selectedObject != null) {
-                var body = selectedObject.GetComponent<Rigidbody>();
-                body.angularVelocity = Vector2.zero;
+                selectedObject.Body.angularVelocity = Vector2.zero;
             }
 
             selectedObject = null;
@@ -90,37 +89,56 @@ public class ItemHolder : MonoBehaviour {
 
     void PhysicMoveObject() {
         var mouseDeltaPos = (Vector2)Input.mousePosition - lastMousePos;
-        var body = selectedObject.GetComponent<Rigidbody>();
         var collider = selectedObject.GetComponent<Collider>();
         
         mouseDeltaPos = mouseDeltaPos * _ObjectMoveSpeed;
 
-        currentMousePossition = Input.mousePosition.y;
+        mouseDeltaPos = mouseDeltaPos.normalized * Mathf.Min(
+            _MaxMovementSpeed, 
+            mouseDeltaPos.magnitude); 
 
+        currentMousePossition = Input.mousePosition.y;
+        
         //adjust movement for camera 
         var movVector = new Vector2(mouseDeltaPos.x, mouseDeltaPos.y);
         movVector = movVector.Rotate(-Camera.main.transform.rotation.eulerAngles.y);
+
+        if (movVector.magnitude <= 0.0f){
+            return;
+        }
         
         var movDif = new Vector3(movVector.x, 0, movVector.y);
-        var newPosition = body.transform.position + movDif;
-        var extends = collider.bounds.extents;//new Vector3(collider.bounds.extents.x, 0.1f, collider.bounds.extents.z);
-        
-        Debug.Log("EXT: "+extends);
-        
-        // check if new position would collide, if so dont move there
-        if (!Physics.BoxCast(
-                newPosition,
-                extends,
-                movDif.normalized,
-                body.gameObject.transform.rotation,
-                movDif.magnitude,
-                wallMask)) {
-            Debug.Log("BOX CAST PASSED");
-            body.transform.position = newPosition;
-        }
-        else{
-            Debug.Log("BLOCK!");
+        var newPosition = selectedObject.Body.transform.position + movDif;
+        var bounds = collider.bounds;
+        var extends = new Vector3(
+            bounds.extents.x, 
+            bounds.extents.y * 0.5f, 
+            bounds.extents.z);
+
+        var size = Physics.OverlapBoxNonAlloc(
+            newPosition, 
+            extends, 
+            colliders, 
+            selectedObject.Body.gameObject.transform.rotation);
+
+        if (size > 0){
+            for (var i = 0; i < size; i++){
+                var collision = colliders[i];
+                
+                // ignore self
+                if (collision.gameObject == selectedObject.Body.gameObject){
+                    continue;
+                }
+
+                return;   
+            }
         }
 
+        selectedObject
+            .Body
+            .transform
+            .position = newPosition;
+
+        selectedObject.WasMoved();
     }
 }

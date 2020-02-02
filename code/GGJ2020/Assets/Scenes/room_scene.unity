@@ -297,7 +297,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 150288357}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -592,9 +592,8 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
-  - component: {fileID: 519420030}
   - component: {fileID: 519420034}
-  - component: {fileID: 519420033}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: main_camera
   m_TagString: MainCamera
@@ -683,25 +682,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 32.093002, y: 0, z: 0}
---- !u!114 &519420033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -747,12 +727,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -975,6 +955,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: d74ece6f102dfaa47aa02f6af42f0073,
         type: 3}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 091a0c522bd87e340bc05a6e7d0191ad, type: 3}
 --- !u!1 &927009049
@@ -1175,6 +1175,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 48ee5588255d30d4e93c3d7627144a7c,
         type: 3}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 091a0c522bd87e340bc05a6e7d0191ad, type: 3}
 --- !u!1 &1005335968
@@ -1466,6 +1486,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: d1b72323dad76bc4da0da6c26f3dbc2f,
         type: 3}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 091a0c522bd87e340bc05a6e7d0191ad, type: 3}
 --- !u!1 &1174965848
@@ -1898,6 +1938,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ObjectMoveSpeed: 0.05
+  _MaxMovementSpeed: 5
   hitLayers:
     serializedVersion: 2
     m_Bits: 512
@@ -1935,7 +1976,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1666426777
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2072,7 +2113,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2073116532
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3586,6 +3627,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 8ccc360b0ed61e54ba5d8fa329ca8988,
         type: 3}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7265652753956879246, guid: 091a0c522bd87e340bc05a6e7d0191ad,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 091a0c522bd87e340bc05a6e7d0191ad, type: 3}
 --- !u!23 &7590176111453205948

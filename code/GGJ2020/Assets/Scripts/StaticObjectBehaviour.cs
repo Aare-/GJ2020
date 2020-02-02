@@ -51,11 +51,14 @@ public class StaticObjectBehaviour : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision coll) {
-        if(coll.gameObject.layer == 8 && Mathf.Abs(coll.relativeVelocity.y) < 0.1f) {
-            TinyMessengerHub
-                .Instance
-                .Publish(Msg.ObjectCollided.Get(this));
-            
+
+        if(coll.gameObject.layer == 8 && Mathf.Abs(coll.relativeVelocity.y) == 0f) {
+            if (ItemHolder.selectedObject != this){
+                TinyMessengerHub
+                    .Instance
+                    .Publish(Msg.ObjectCollided.Get(this));
+            }
+
             _HasToBeMoved = true;
             _RoomManager.BlockRotation();
         }
@@ -63,9 +66,5 @@ public class StaticObjectBehaviour : MonoBehaviour {
 
     public void WasMoved() {
         _HasToBeMoved = false;
-    }
-
-    public void Move(int moveIndex) {
-        
     }
 }
